@@ -45,9 +45,9 @@ func CalcularTensao(w http.ResponseWriter, r *http.Request) {
 	dados.Tensao = dados.Corrente * dados.Resistencia
 
 	response := struct {
-		Mensagem string `json:"mensagem"`
+		Resposta string `json:"resposta"`
 	}{
-		Mensagem: fmt.Sprintf("A tensão é %.2f volts", dados.Tensao),
+		Resposta: fmt.Sprintf("A tensão é %.2f volts", dados.Tensao),
 	}
 	err = json.NewEncoder(w).Encode(response)
 	if err != nil {
@@ -70,9 +70,9 @@ func CalcularCorrente(w http.ResponseWriter, r *http.Request) {
 	dados.Corrente = dados.Tensao / dados.Resistencia
 
 	response := struct {
-		Mensagem string `json:"mensagem"`
+		Resposta string `json:"resposta"`
 	}{
-		Mensagem: fmt.Sprintf("A corrente é %.2f amperes", dados.Corrente),
+		Resposta: fmt.Sprintf("A corrente é %.2f amperes", dados.Corrente),
 	}
 	err = json.NewEncoder(w).Encode(response)
 	if err != nil {
@@ -95,9 +95,9 @@ func CalcularResistencia(w http.ResponseWriter, r *http.Request) {
 	dados.Resistencia = dados.Tensao / dados.Corrente
 
 	response := struct {
-		Mensagem string `json:"mensagem"`
+		Resposta string `json:"resposta"`
 	}{
-		Mensagem: fmt.Sprintf("A resistência é %.2f ohms", dados.Resistencia),
+		Resposta: fmt.Sprintf("A resistência é %.2f ohms", dados.Resistencia),
 	}
 	err = json.NewEncoder(w).Encode(response)
 	if err != nil {
@@ -201,7 +201,7 @@ func CalcularEnergiaVRT(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	dados.EnergiaVRT = (dados.Tensao * dados.Tensao) / dados.Resistencia * dados.Tempo
+	dados.EnergiaVRT = (dados.Tensao * dados.Tensao * dados.Tempo) / dados.Resistencia
 
 	response := struct {
 		Resposta string `json:"resposta"`
